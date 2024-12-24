@@ -4,10 +4,16 @@ export class CategoryUseCases {
   constructor(private readonly categoryRepo: IRepository) {}
 
   async listCategory() {
-    return "teste";
+    const categories = await this.categoryRepo.list();
+    return categories;
   }
 
-  async createCategory() {
-    return "teste";
+  async createCategory(data: {name: string; icon: string}) {
+    const regex = /https?:\/\//;
+    if(data.name.length < 3 || !regex.test(data.icon)) {
+      return  {error: true, message: "Invalid data"};
+    }
+    const newCategory = await this.categoryRepo.create<{name: string; icon: string}>(data);
+    return newCategory;
   }
 }

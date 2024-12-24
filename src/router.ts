@@ -1,10 +1,11 @@
 import { Router } from "express";
 import { CategoryController } from "./app/controllers/CategoryController";
 import { CategoryRepository } from "./app/repository/CategoryRepo";
+import { CategoryUseCases } from "./app/useCases/categories/CategoryUseCases";
 
 export const router = Router();
 
-const categoryController = new CategoryController(new CategoryRepository());
+const categoryController = new CategoryController(new CategoryUseCases(new CategoryRepository()));
 
 
 // List Category

@@ -1,41 +1,33 @@
-import { describe, expect, test, vi } from 'vitest';
-import { Category } from '../../../models/Category';
-import { listCategories } from '../ListCategories';
+import { describe, expect, test } from 'vitest';
+import { CategoryUseCases } from '../CategoryUseCases';
+import { FakeDbCategory } from './fakeDbCagegory';
 
 describe('Category', () => {
+  const categoryUseCase = new CategoryUseCases(new FakeDbCategory());
   describe('List', () => {
-    const mockListData = [
-      {
-        name: 'Bebidas',
-        icon: 'https://icon.com/bebida.png'
-      },
-      {
-        name: 'Sobremesa',
-        icon: 'https://icon.com/doce.png'
-      }
-    ]
-
     test('should list all categories', async () => {
-      const spy = vi.spyOn(Category, 'find').mockResolvedValue(mockListData);
-      const categories = await listCategories();
-      expect(categories).toEqual(mockListData);
-      expect(spy).toHaveBeenCalled();
+      const categories = await categoryUseCase.listCategory();
+      expect(categories).toEqual([]);
     });
   });
-  // describe('Create', () => {
-  //   const mockListBody =  {
-  //     _id: '123',
-  //     name: 'Bebidas',
-  //     icon: 'https://icon.com/bebida.png'
-  //   };
+  describe('Create', () => {
+    const mockListBody =  {
+      name: 'Bebidas',
+      icon: 'https://icon.com/bebida.png'
+    };
 
-  //   test('should create a category', async () => {
-  //     const spy = vi.spyOn(Category, 'create').mockImplementationOnce(() => {
-  //       return mockListBody;
-  //     });
-  //     const categories = await createCategory(mockListBody);
-  //     expect(categories).toEqual(mockListBody);
-  //     expect(spy).toHaveBeenCalled();
-  //   });
-  // });
+    const incorrectMockListBody =  {
+      name: 'Be',
+      icon: 'teste'
+    };
+
+    test('should create a category', async () => {
+      const categories = await categoryUseCase.createCategory(mockListBody);
+      expect(categories).toEqual(mockListBody);
+    });
+    test('should return an error if the req body is incorrect', async () => {
+      const categories = await categoryUseCase.createCategory(incorrectMockListBody);
+      expect(categories).toEqual({error: true, message: "Invalid data"});
+    });
+  });
 });
