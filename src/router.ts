@@ -1,18 +1,15 @@
 import { Router } from "express";
-import { CategoryController } from "./app/controllers/CategoryController";
-import { CategoryRepository } from "./app/repository/CategoryRepo";
-import { CategoryUseCases } from "./app/useCases/categories/CategoryUseCases";
+import { createCategory } from "./app/useCases/categories/createCategory";
+import { listCategory } from "./app/useCases/categories/listCategory";
 
 export const router = Router();
 
-const categoryController = new CategoryController(new CategoryUseCases(new CategoryRepository()));
-
 
 // List Category
-router.get("/categories", categoryController.list);
+router.get("/categories", listCategory);
 
 // Create Category
-router.post("/categories", categoryController.create);
+router.post("/categories", createCategory);
 
 // List Products
 router.get("/products", (req, res) => {
