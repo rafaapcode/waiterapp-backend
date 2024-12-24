@@ -1,13 +1,36 @@
 import { Request, Response } from "express";
 import pino from "pino";
+import { Product } from "../../models/Product";
 
 const logger = pino();
 
 export const createProduct = async (req: Request, res: Response) => {
  try {
-  // const product = await Product.create({icon, name});
-  console.log(req.body);
-  res.sendStatus(201)
+  const imagePath = req.file?.filename;
+  const { name, description, price, category, ingredients } = req.body;
+
+  if (!name || !description || !price || !category || !ingredients || !imagePath) {
+    res.status(400).json({
+      error: "Missing required fields"
+    });
+  }
+
+  if (!imagePath) {
+    res.status(400).json({
+      error: "Missing image"
+    });
+  }
+
+  const product = await Product.create({
+    name,
+    description,
+    price: Number(price),
+    category,
+    ingredients: JSON.parse(ingredients),
+    imagePath
+  });
+
+  res.status(201).json(product);
  } catch (err) {
   logger.error(err);
   res.status(500).json({
