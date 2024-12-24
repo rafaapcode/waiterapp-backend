@@ -4,6 +4,8 @@ import path from "node:path";
 import { createCategory } from "./app/useCases/categories/createCategory";
 import { listCategory } from "./app/useCases/categories/listCategory";
 import { listProductByCategorie } from "./app/useCases/categories/listProductsByCategorie";
+import { createOrder } from "./app/useCases/orders/crateOrder";
+import { listOrders } from "./app/useCases/orders/listOrders";
 import { createProduct } from "./app/useCases/products/createProduct";
 import { listProducts } from "./app/useCases/products/listProducts";
 
@@ -35,14 +37,10 @@ router.post("/products", upload.single('image'), createProduct);
 router.get("/categories/:categoryId/products", listProductByCategorie);
 
 // List orders
-router.get("/orders", (req, res) => {
-  res.send("List of orders");
-});
+router.get("/orders", listOrders);
 
 // Create order
-router.post("/orders", (req, res) => {
-  res.send("Create of orders");
-});
+router.post("/orders", createOrder);
 
 // Change order status
 router.patch("/orders", (req, res) => {
