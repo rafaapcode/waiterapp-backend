@@ -1,13 +1,17 @@
 import { Router } from "express";
 import { CategoryController } from "./app/controllers/CategoryController";
+import { CategoryRepository } from "./app/repository/CategoryRepo";
 
 export const router = Router();
 
+const categoryController = new CategoryController(new CategoryRepository());
+
+
 // List Category
-router.get("/categories", CategoryController.list);
+router.get("/categories", categoryController.list);
 
 // Create Category
-router.post("/categories", CategoryController.create);
+router.post("/categories", categoryController.create);
 
 // List Products
 router.get("/products", (req, res) => {
