@@ -6,18 +6,18 @@ const logger = pino();
 
 export const deleteOrder = async (req: Request, res: Response) => {
  try {
-  const {table, products} = req.body;
+  const {orderId} = req.params;
 
-  if(!table || !products) {
+  if(!orderId) {
     res.status(400).json({
-      error: "Table and products are required"
+      error: "Order ID is required"
     })
     return;
   }
 
-  const order = await Order.create({table, products});
+  await Order.findByIdAndDelete(orderId);
 
-  res.status(201).json(order);
+  res.sendStatus(204);
  } catch (err) {
   logger.error(err);
   res.status(500).json({
