@@ -13,12 +13,14 @@ export const createProduct = async (req: Request, res: Response) => {
     res.status(400).json({
       error: "Missing required fields"
     });
+    return;
   }
 
   if (!imagePath) {
     res.status(400).json({
       error: "Missing image"
     });
+    return;
   }
 
   const product = await Product.create({

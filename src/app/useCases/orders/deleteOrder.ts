@@ -4,7 +4,7 @@ import { Order } from "../../models/Order";
 
 const logger = pino();
 
-export const createOrder = async (req: Request, res: Response) => {
+export const deleteOrder = async (req: Request, res: Response) => {
  try {
   const {table, products} = req.body;
 
@@ -12,6 +12,7 @@ export const createOrder = async (req: Request, res: Response) => {
     res.status(400).json({
       error: "Table and products are required"
     })
+    return;
   }
 
   const order = await Order.create({table, products});

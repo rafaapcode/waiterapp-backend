@@ -12,12 +12,14 @@ export const createCategory = async (req: Request, res: Response) => {
     res.status(400).json({
       error: "Name is required"
     });
+    return;
   }
 
   if(!icon) {
     res.status(400).json({
       error: "Name is required"
     });
+    return;
   }
 
   const categorie = await Category.create({icon, name});
